@@ -1,0 +1,6 @@
+*.log
+*~
+*.bak
+*.out
+configs/local/config.json
+node_modules/*
