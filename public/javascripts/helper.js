@@ -1,50 +1,45 @@
-(function(factory) {
-	// check jQuery
-	if (typeof $ === 'undefined' && typeof jQuery === 'undefined') {
-		throw new Error('Modal helper need jQuery');
+(function(root, factory) {
+	"use strict";
+	
+	// CommonJS module is defined
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = factory(require("jquery"));
 	}
-
-	var $ = $ || jQuery;
-
-	if ( typeof module === "object" && typeof module.exports === "object" ) {
-		module.exports = global.document ?
-			factory($) :
-			function($) {
-				return factory(w);
-			};
+	// AMD module is defined
+	else if (typeof define === "function" && define.amd) {
+		define("modalHelper", ["jquery"], function($) {
+			return factory($);
+		});
 	} else {
-		console.log($);
-		factory($);
+		// planted over the root!
+		root.modalHelper = factory(root.jQuery);
+	  return root.modalHelper;
 	}
-}(function($) {
+}(this, function($) {
+	"use strict";
+
 	// width
 	// max-width
 	// height
 	// max-height
 	// resize when percent and window resize
 	
-	$.fn.myModal = function(options) {
-		$this = $(this);
-		
-		// Set width
-		if (options.width) {
-			// check percent
-			if (options.width.substr(-1, 1) === '%') {
-				setPercent($this, options.width);
-			} else {
-				setNumber($this, options.width);
-			}
+	function ModalHelper () {
+		var self = this;
+
+		$.fn.myModal = function(options) {
+			var $this = $(this);
+			self.setOptions.call($this, options);
+
+			$this.modal(options);
 		}
 
-		$this.modal(options);
+		this.setOptions = function(options) {
+			var $e = this;
+			console.log(this);
+			console.log(options);
+		}
 	}
 
-	function setNumber($ele, width) {
-		width = width > document.body.clientWidth ? document.body.clientWidth : width;
-		$this.find('.modal-dialog').css('width', width);
-	}
-
-	function setPercent($ele, percent) {
-		$this.find('.modal-dialog').css('width', percent);
-	}
+	return new ModalHelper();
 }));
