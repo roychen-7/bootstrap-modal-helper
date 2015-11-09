@@ -1,5 +1,6 @@
 $('button').click(function() {
 	$('.modal').myModal({
-		width: '900'
+		width: '90%',
+		height: '50%'
 	});
 });
